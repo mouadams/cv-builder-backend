@@ -1,0 +1,161 @@
+<div class="nova">
+  <aside class="sidebar">
+    <div class="sidebar-bg"></div>
+    <div class="sidebar-content">
+      <div class="avatar-wrap">
+        <div class="avatar">
+          @if (resume.personal.photoDataUrl) {
+            <img [src]="resume.personal.photoDataUrl" alt="" />
+          } @else {
+            <span>{{ (resume.personal.firstName || 'P').slice(0, 1) }}{{ (resume.personal.lastName || 'N').slice(0, 1) }}</span>
+          }
+        </div>
+      </div>
+
+      @if (resume.personal.phone || resume.personal.email || resume.personal.location || resume.personal.linkedIn) {
+        <section class="block contact-block">
+          <h3>CONTACT</h3>
+          @if (resume.personal.phone) {
+            <div class="contact-row">
+              <i class="bi bi-telephone-fill"></i>
+              <span>{{ resume.personal.phone }}</span>
+            </div>
+          }
+          @if (resume.personal.email) {
+            <div class="contact-row">
+              <i class="bi bi-envelope-fill"></i>
+              <span>{{ resume.personal.email }}</span>
+            </div>
+          }
+          @if (resume.personal.location) {
+            <div class="contact-row">
+              <i class="bi bi-geo-alt-fill"></i>
+              <span>{{ resume.personal.location }}</span>
+            </div>
+          }
+          @if (resume.personal.linkedIn) {
+            <div class="contact-row">
+              <i class="bi bi-linkedin"></i>
+              <span>{{ resume.personal.linkedIn }}</span>
+            </div>
+          }
+        </section>
+      }
+
+      @if (resume.languages.length) {
+        <section class="block">
+          <h3>LANGUES</h3>
+          <div class="lang-list">
+            @for (l of resume.languages; track $index) {
+              <div class="lang-item">
+                <span class="lang-name">{{ l.name }}</span>
+                <div class="lang-bar">
+                  <div class="lang-bar-fill" [style.width.%]="getLangPercent(l.level)"></div>
+                </div>
+              </div>
+            }
+          </div>
+        </section>
+      }
+
+      @if (resume.skills.length) {
+        <section class="block">
+          <h3>COMPÉTENCES</h3>
+          <ul class="bullet-list">
+            @for (s of resume.skills; track $index) {
+              <li>{{ s.name }}</li>
+            }
+          </ul>
+        </section>
+      }
+
+      @if (resume.interests.length) {
+        <section class="block">
+          <h3>CENTRES D'INTÉRÊT</h3>
+          <ul class="bullet-list">
+            @for (i of resume.interests; track $index) {
+              <li>{{ i }}</li>
+            }
+          </ul>
+        </section>
+      }
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="main-header">
+      <h1 class="full-name">
+        {{ resume.personal.firstName || 'Prénom' }} <span>{{ resume.personal.lastName || 'Nom' }}</span>
+      </h1>
+      @if (resume.personal.headline) {
+        <p class="headline">{{ resume.personal.headline }}</p>
+      }
+    </header>
+
+    @if (resume.personal.summary) {
+      <section class="block">
+        <h3>PROFIL</h3>
+        <p class="summary">{{ resume.personal.summary }}</p>
+      </section>
+    }
+
+    @if (resume.education.length) {
+      <section class="block">
+        <h3>FORMATION</h3>
+        @for (ed of resume.education; track $index) {
+          <article class="entry">
+            <div class="entry-head">
+              <strong class="entry-title">{{ ed.degree || 'Diplôme' }} {{ ed.field || '' }}</strong>
+              <span class="entry-meta">{{ ed.school || 'Établissement' }}@if (ed.location) {, {{ ed.location }} } | {{ ed.startDate || '' }}@if (ed.endDate) { — {{ ed.endDate }} }</span>
+            </div>
+            @if (ed.description) {
+              <p class="entry-desc">{{ ed.description }}</p>
+            }
+          </article>
+        }
+      </section>
+    }
+
+    @if (resume.experience.length) {
+      <section class="block">
+        <h3>EXPÉRIENCES PROFESSIONNELLES</h3>
+        @for (e of resume.experience; track $index) {
+          <article class="entry">
+            <div class="entry-head">
+              <strong class="entry-title">{{ e.role || 'Poste' }}</strong>
+              <span class="entry-meta">{{ e.company || 'Entreprise' }}@if (e.location) {, {{ e.location }} } | {{ e.startDate || '' }}@if (e.endDate) { — {{ e.endDate }} }</span>
+            </div>
+            @if (e.description) {
+              <ul class="entry-bullets">
+                @for (line of getDescriptionLines(e.description); track $index) {
+                  <li>{{ line }}</li>
+                }
+              </ul>
+            }
+          </article>
+        }
+      </section>
+    }
+
+    @if (resume.stages.length) {
+      <section class="block">
+        <h3>STAGES</h3>
+        @for (s of resume.stages; track $index) {
+          <article class="entry">
+            <div class="entry-head">
+              <strong class="entry-title">{{ s.intitule || 'Intitulé' }}</strong>
+              <span class="entry-meta">{{ s.entreprise || 'Entreprise' }}@if (s.duree) { | {{ s.duree }} }</span>
+            </div>
+            @if (s.description) {
+              <ul class="entry-bullets">
+                @for (line of getDescriptionLines(s.description); track $index) {
+                  <li>{{ line }}</li>
+                }
+              </ul>
+            }
+          </article>
+        }
+      </section>
+    }
+  </main>
+</div>

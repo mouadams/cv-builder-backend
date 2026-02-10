@@ -1,0 +1,79 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background: var(--color-bg);
+}
+
+.app-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(20px);
+  background: rgba(255, 255, 255, 0.95) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  transition: var(--transition);
+  padding: 0 24px;
+  height: 72px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  padding: 8px 12px;
+  border-radius: 12px;
+
+  &:hover {
+    background: rgba(14, 165, 233, 0.05);
+    transform: translateX(-2px);
+  }
+
+  .brand-name {
+    font-size: 1.5rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #1e40af 0%, #0ea5e9 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.02em;
+  }
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 10px;
+  transition: all 0.2s ease;
+  color: #64748b;
+  font-weight: 500;
+
+  &:hover {
+    background: rgba(14, 165, 233, 0.08);
+    color: #0ea5e9;
+  }
+
+  &.active {
+    background: linear-gradient(135deg, rgba(14, 165, 233, 0.1), rgba(59, 130, 246, 0.1));
+    color: #0ea5e9;
+    font-weight: 600;
+  }
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.app-content {
+  padding: 24px;
+  min-height: calc(100vh - 64px);
+
+  @media (max-width: 768px) {
+    padding: 16px;
+  }
+}
+

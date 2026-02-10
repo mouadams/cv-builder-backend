@@ -1,0 +1,77 @@
+<section class="cv-list-container">
+  <div class="page-header">
+    <div class="header-content">
+      <div class="header-title-section">
+        <h1>Mes CVs</h1>
+        <p class="header-subtitle">Gérez et modifiez tous vos CVs en un seul endroit</p>
+      </div>
+      <div class="header-actions">
+        <button mat-button (click)="loadResumes()" [disabled]="loading" [class.refresh-spinning]="loading" title="Actualiser" class="refresh-btn">Actualiser</button>
+        <a mat-flat-button color="primary" routerLink="/" class="create-btn">
+          <span>Créer un nouveau CV</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  @if (loading) {
+    <div class="loading">
+      <p>Chargement des CVs...</p>
+    </div>
+  } @else if (resumes.length === 0) {
+    <div class="empty-state">
+      <h2>Aucun CV sauvegardé</h2>
+      <p>Créez votre premier CV pour commencer</p>
+      <a mat-flat-button color="primary" routerLink="/">Créer un CV</a>
+    </div>
+  } @else {
+    <div class="cv-grid">
+      @for (resume of resumes; track resume.id) {
+        <mat-card class="cv-card">
+          <mat-card-header>
+            <div class="cv-card-avatar" mat-card-avatar aria-hidden="true">
+              @if (resume.photoDataUrl) {
+                <img [src]="resume.photoDataUrl" alt="" />
+              } @else {
+                <span>{{ (resume.firstName || 'P').slice(0, 1) }}{{ (resume.lastName || 'N').slice(0, 1) }}</span>
+              }
+            </div>
+            <mat-card-title>
+              @if (resume.firstName || resume.lastName) {
+                {{ resume.firstName }} {{ resume.lastName }}
+              } @else {
+                CV #{{ resume.id }}
+              }
+            </mat-card-title>
+            <mat-card-subtitle>
+              {{ getTemplateName(resume.templateId) }}
+            </mat-card-subtitle>
+          </mat-card-header>
+
+          <mat-card-content>
+            @if (resume.email) {
+              <div class="info-row">
+                <i class="bi bi-envelope-fill" aria-hidden="true"></i>
+                <span>{{ resume.email }}</span>
+              </div>
+            }
+            <div class="info-row">
+              <i class="bi bi-clock-history" aria-hidden="true"></i>
+              <span>Modifié: {{ formatDate(resume.updatedAt) }}</span>
+            </div>
+          </mat-card-content>
+
+          <mat-card-actions align="end">
+            <button mat-stroked-button color="primary" (click)="editResume(resume.id)" class="action-btn">
+              <span>Modifier</span>
+            </button>
+            <button mat-stroked-button color="warn" (click)="deleteResume(resume.id, resume.firstName + ' ' + resume.lastName)" class="action-btn">
+              <span>Supprimer</span>
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      }
+    </div>
+  }
+</section>
+
